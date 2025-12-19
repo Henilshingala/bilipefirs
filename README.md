@@ -103,3 +103,49 @@ Given the size and structure, this could be:
 **Files**: 16,838+ files
 
 **Note**: This appears to include the entire Django framework within the project structure, which is unusual. Typically, Django would be installed via pip. Further investigation of the specific application code is recommended.
+
+## 📸 Output
+
+### Application Screenshots
+
+![Screenshot 1](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/1.png)
+
+![Screenshot 2](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/2.png)
+
+![Screenshot 3](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/3.png)
+
+![Screenshot 4](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/4.png)
+
+![Screenshot 5](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/5.png)
+
+![Screenshot 6](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/6.png)
+
+![Screenshot 7](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/7.png)
+
+![Screenshot 8](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/8.png)
+
+![Screenshot 9](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/9.png)
+
+![Screenshot 10](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/10.png)
+
+![Screenshot 11](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/11.png)
+
+![Screenshot 12](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/12.png)
+
+![Screenshot 13](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/13.png)
+
+![Screenshot 14](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/14.png)
+
+![Screenshot 15](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/15.png)
+
+![Screenshot 16](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/16.png)
+
+![Screenshot 17](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/17.png)
+
+![Screenshot 18](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/18.png)
+
+![Screenshot 19](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/19.png)
+
+![Screenshot 20](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/20.png)
+
+![Screenshot 21](https://raw.githubusercontent.com/Henilshingala/Output-images/master/bilipefirs/21.png)
