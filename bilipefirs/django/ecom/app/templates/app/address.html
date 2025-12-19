@@ -1,0 +1,289 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Address{% endblock title %}
+
+{% block main-content %}
+<!-- Particles.js container -->
+<div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        /* Removed background gradient as we're using particles.js */
+    }
+
+    /* Particles.js styling */
+    #particles-js {
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #000000; /* Black background */
+        z-index: -1; /* Keeps the particles behind other content */
+        pointer-events: none; /* Ensure particles don't interfere with user interactions */
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        flex-direction: column;
+    }
+
+    .card {
+        /* Transparent box that becomes opaque on hover */
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        border-radius: 10px;
+        width: 100%;
+        max-width: 900px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-top: 20px;
+        transition: all 0.3s ease-in-out;
+        color: white; /* Text color changed to white for better visibility */
+    }
+
+    .card:hover {
+        background-color: rgba(0, 0, 0, 1); /* Fully opaque black on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: white; /* Changed text color */
+        margin-bottom: 1.5rem;
+        position: relative;
+        text-align: center;
+    }
+
+    h2::after {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background: #ffd700; /* Changed to gold to match particles */
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -10px;
+    }
+
+    .btn {
+        background-color: #ffd700; /* Changed to gold */
+        color: black;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-top: 20px;
+        display: inline-block;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        color: #ffd700;
+        background-color: #000000;
+        transform: translateY(-2px);
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-danger {
+        background-color: #ff416c;
+    }
+
+    .card .btn {
+        width: 48%;
+    }
+
+    .alert {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .alert-warning {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .alert-info {
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+    }
+
+    .address-card {
+        border: 1px solid #ffd700; /* Gold border */
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: box-shadow 0.3s ease-in-out;
+        background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
+    }
+
+    .address-card:hover {
+        box-shadow: 0 4px 8px rgba(255, 215, 0, 0.5); /* Gold shadow */
+        background-color: rgba(0, 0, 0, 0.8); /* Darker black on hover */
+    }
+
+    .address-card h3 {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #ffd700; /* Gold text */
+    }
+
+    .address-card p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: white;
+    }
+
+    .address-card strong {
+        color: #ffd700; /* Gold text for labels */
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <h2>Welcome, <span class="text-capitalize">{{ request.user }}</span></h2>
+        <div class="btn-group">
+            <a href="{% url 'profile' %}" class="btn">Profile</a>
+            <a href="{% url 'address' %}" class="btn">Address</a>
+        </div>
+        <div class="row mt-4">
+            {% for address in addresses %}
+            <div class="col-md-6">
+                <div class="address-card">
+                    <h3>Address {{ forloop.counter }}</h3>
+                    <p><strong>Name:</strong> {{ address.full_name }}</p>
+                    <p><strong>Mobile:</strong> {{ address.mobile }}</p>
+                    <p><strong>Address:</strong> {{ address.house_no }}, {{ address.street }}</p>
+                    {% if address.landmark %}
+                    <p><strong>Landmark:</strong> {{ address.landmark }}</p>
+                    {% endif %}
+                    <p><strong>City:</strong> {{ address.city }}</p>
+                    <p><strong>State:</strong> {{ address.state }}</p>
+                    <p><strong>Pincode:</strong> {{ address.pincode }}</p>
+                    <div class="text-center">
+                        <a href="{% url 'updateAddress' pk=address.id %}" class="btn">Update Address</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No addresses found. Please add an address from your profile.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Particles.js library import -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<!-- Particles.js initialization -->
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Initialize particles.js
+    particlesJS("particles-js", {
+        "particles": {
+            "number": {
+                "value": 300, // Increased number of particles
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffd700" // Gold color particles
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                },
+                "polygon": {
+                    "nb_sides": 5
+                }
+            },
+            "opacity": {
+                "value": 1, // 100% opacity
+                "random": true,
+                "anim": {
+                    "enable": true,
+                    "speed": 0.5,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                    "enable": true,
+                    "speed": 4,
+                    "size_min": 0.3
+                }
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffd700", // Gold lines connecting particles
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 5, // Increased speed of particles
+                "direction": "none",
+                "random": true,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                    "enable": false,
+                    "rotateX": 600,
+                    "rotateY": 1200
+                }
+            }
+        },
+        "interactivity": {
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                }
+            }
+        },
+        "retina_detect": true
+    });
+});
+</script>
+{% endblock %}

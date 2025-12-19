@@ -1,0 +1,119 @@
+Country,country_code,Dial_Code
+United States,US,1
+Canada,CA,1
+Bahamas,BS,+1-242
+Barbados,BB,+1-246
+Anguilla,AI,+1-264
+Antigua and Barbuda,AG,+1-268
+Cayman Islands,KY,+1-345
+Bermuda,BM,+1-441
+American Samoa,AS,+1-684
+Dominica,DM,+1-767
+Dominican Republic,DO,+1-809
+Jamaica,JM,+1-876
+Egypt,EG,20
+Morocco,MA,212
+Algeria,DZ,213
+Libya,LY,218
+Burkina Faso,BF,226
+Benin,BJ,229
+Ghana,GH,233
+Nigeria,NG,234
+Chad,TD,235
+Central African Republic,CF,236
+Cameroon,CM,237
+Cape Verde,CV,238
+Congo,CG,242
+Democratic Republic of the Congo,CD,243
+Angola,AO,244
+Ethiopia,ET,251
+Djibouti,DJ,253
+Kenya,KE,254
+Burundi,BI,257
+Botswana,BW,267
+Comoros,KM,269
+South Africa,ZA,27
+Aruba,AW,297
+Greece,GR,30
+Netherlands,NL,31
+Belgium,BE,32
+France,FR,33
+Spain,ES,34
+Portugal,PT,351
+Luxembourg,LU,352
+Ireland,IE,353
+Iceland,IS,354
+Albania,AL,355
+Cyprus,CY,357
+Finland,FI,358
+Bulgaria,BG,359
+Hungary,HU,36
+Lithuania,LT,370
+Latvia,LV,371
+Estonia,EE,372
+Armenia,AM,374
+Belarus,BY,375
+Andorra,AD,376
+Croatia,HR,385
+Bosnia and Herzegovina,BA,387
+Italy,IT,39
+Romania,RO,40
+Switzerland,CH,41
+Czech Republic,CZ,420
+Austria,AT,43
+United Kingdom,GB,44
+Denmark,DK,45
+Sweden,SE,46
+Norway,NO,47
+Poland,PL,48
+Germany,DE,49
+Belize,BZ,501
+Guatemala,GT,502
+El Salvador,SV,503
+Honduras,HN,504
+Costa Rica,CR,506
+Haiti,HT,509
+Peru,PE,51
+Mexico,MX,52
+Cuba,CU,53
+Argentina,AR,54
+Brazil,BR,55
+Chile,CL,56
+Colombia,CO,57
+Bolivia,BO,591
+Ecuador,EC,593
+Malaysia,MY,60
+Australia,AU,61
+Indonesia,ID,62
+Philippines,PH,63
+New Zealand,NZ,64
+Thailand,TH,66
+Antarctica,AQ,672
+Brunei Darussalam,BN,673
+Fiji,FJ,679
+Russia,RU,7
+Kazakhstan,KZ,7
+Japan,JP,81
+Cambodia,KH,855
+Lao PDR,LA,856
+China,CN,86
+Bangladesh,BD,880
+India,IN,91
+Pakistan,PK,92
+Afghanistan,AF,93
+Sri Lanka,LK,94
+Maldives,MV,960
+Lebanon,LB,961
+Jordan,JO,962
+Iraq,IQ,964
+Kuwait,KW,965
+Saudi Arabia,SA,966
+Israel,IL,972
+Bahrain,BH,973
+Qatar,QA,974
+Bhutan,BT,975
+Mongolia,MN,976
+Nepal,NP,977
+Iran,IR,98
+Azerbaijan,AZ,994
+Kyrgyzstan,KG,996

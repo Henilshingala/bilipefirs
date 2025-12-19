@@ -1,0 +1,395 @@
+{% load custom_filters %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crypto Payment Checkout</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    .btn {
+      background-color: #5185ff;
+    }
+    .btn:hover {
+      color: white;
+      background-color: #000000;
+      transform: translateY(-2px);
+    }
+    .warning-box {
+      background: #fff8e1;
+      padding: 15px;
+      border: 2px solid #ffc107;
+      border-radius: 10px;
+      color: #333;
+      margin-bottom: 20px;
+      font-family: Arial, sans-serif;
+    }
+    /* Particles background */
+#particles-js {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #000000;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Transparent box that becomes opaque on hover */
+.card {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.card-header {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.border {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.bg-light {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  color: white;
+}
+
+.text-primary {
+  color: #ffd700 !important;
+}
+
+.alert-info {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-color: #ffd700;
+}
+  </style>
+</head>
+<body style="background: linear-gradient(135deg, #fbc2eb 0%, #a6c0fe 100%);">
+
+<!-- MetaMask Warning -->
+<div id="metamaskWarning" class="warning-box" style="display:none;">
+  <strong>⚠️ Important:</strong>
+  <p>It looks like MetaMask is not detected.</p>
+  <p>👉 Please open this website <b>inside the MetaMask Mobile App's browser</b> to complete your payment.</p>
+  <ol>
+    <li>Open MetaMask App on your mobile</li>
+    <li>Tap on the <b>Browser</b> inside the app</li>
+    <li>Visit: <b>yourwebsite.com</b></li>
+    <li>Login and Pay</li>
+  </ol>
+</div>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Checkout Payment</h4>
+        </div>
+        <div class="card-body">
+
+          <!-- Order Summary -->
+          <div class="mb-4">
+            <h5>Order Summary</h5>
+            <div class="border rounded p-3 bg-light">
+              <div class="d-flex justify-content-between mb-2">
+                <span>Subtotal:</span>
+                <span>₹{{ amount }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>GST (28%):</span>
+                <span>₹{{ gst }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>CESS (20%):</span>
+                <span>₹{{ cess }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Delivery:</span>
+                <span>₹100000</span>
+              </div>
+              <hr>
+              {% if discount_percentage %}
+              <div class="d-flex justify-content-between text-success mb-2">
+                <span>Discount ({{ discount_percentage }}%):</span>
+                <span>-₹{{ totalamount|multiply:discount_percentage|divide:100|floatformat:2 }}</span>
+                <span class="text-danger cancel-discount"
+                      style="cursor: pointer; font-size: 28px;"
+                      onclick="removeDiscount()"
+                      role="button"
+                      aria-label="Remove discount">
+                  <i class="fas fa-times-circle"></i>
+                </span>
+              </div>
+              {% endif %}
+
+              <div class="mt-3">
+                <form method="post" action="{% url 'apply_discount' %}" id="discountForm">
+                  {% csrf_token %}
+                  <div class="input-group">
+                    <input type="text" name="discount_code" class="form-control" placeholder="Enter discount code" required>
+                    <button type="submit" class="btn btn-primary" id="applyDiscountBtn">
+                      Apply Discount
+                    </button>
+                  </div>
+                  <div id="discountError" class="text-danger mt-2" style="display: none;"></div>
+                </form>
+              </div>
+
+              <div class="d-flex justify-content-between fw-bold mt-3">
+                <span>Total Amount:</span>
+                <span>₹{{ totalamount }}</span>
+              </div>
+              <div class="d-flex justify-content-between text-primary mt-2">
+                <span>Amount in ETH:</span>
+                <span id="ethAmount">{{ eth_amount }} ETH</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wallet Status -->
+          <div class="alert alert-info d-none" id="walletStatus">
+            Connected Wallet: <span id="walletAddress"></span>
+          </div>
+
+          <!-- Connect & Pay Buttons -->
+          <div class="d-grid gap-2">
+            <button id="connectWalletBtn" onclick="connectWallet()" class="btn">
+              <i class="fa-brands fa-ethereum me-2"></i> Connect MetaMask Wallet
+            </button>
+            <button id="payButton" onclick="makePayment()" class="btn d-none">
+              <i class="fa-solid fa-money-check-dollar me-2"></i> Pay {{ eth_amount }} ETH
+            </button>
+          </div>
+
+          <!-- Loading Spinner -->
+          <div id="loadingSpinner" class="text-center mt-3 d-none">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Processing your payment...</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (typeof window.ethereum === 'undefined') {
+    document.getElementById('metamaskWarning').style.display = 'block';
+  }
+});
+
+// Discount form validation
+document.getElementById('discountForm').addEventListener('submit', function(e) {
+  const code = document.querySelector('input[name="discount_code"]').value.trim();
+  const errorDiv = document.getElementById('discountError');
+
+  if (!code) {
+    e.preventDefault();
+    errorDiv.textContent = 'Please enter a discount code';
+    errorDiv.style.display = 'block';
+    return;
+  }
+
+  if (!/^[A-Za-z0-9]+$/.test(code)) {
+    e.preventDefault();
+    errorDiv.textContent = 'Only letters and numbers are allowed';
+    errorDiv.style.display = 'block';
+    return;
+  }
+
+  document.getElementById('applyDiscountBtn').disabled = true;
+});
+
+// Remove Discount
+function removeDiscount() {
+  const button = document.querySelector('.cancel-discount');
+  button.style.pointerEvents = 'none';
+
+  fetch("{% url 'remove_discount' %}", {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": "{{ csrf_token }}",
+      "Content-Type": "application/json"
+    }
+  }).then(response => {
+    if (response.ok) {
+      window.location.reload();
+    } else {
+      throw new Error('Failed to remove discount');
+    }
+  }).catch(error => {
+    console.error('Error:', error);
+    button.style.pointerEvents = 'auto';
+    alert('Failed to remove discount. Please try again.');
+  });
+}
+
+// Wallet Connection & Payment
+let accounts = [];
+const receiverAddress = '0x53E1a568929C6D778C1e58D33A5395a76B92741F';  // Replace with your wallet address
+
+async function connectWallet() {
+  const connectButton = document.getElementById('connectWalletBtn');
+  const walletStatus = document.getElementById('walletStatus');
+  const payButton = document.getElementById('payButton');
+
+  if (typeof window.ethereum !== 'undefined') {
+    connectButton.disabled = true;
+    try {
+      accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      const shortAddress = accounts[0].slice(0, 6) + '...' + accounts[0].slice(-4);
+      document.getElementById('walletAddress').textContent = shortAddress;
+      walletStatus.classList.remove('d-none');
+      connectButton.classList.add('d-none');
+      payButton.classList.remove('d-none');
+
+      ethereum.on('accountsChanged', function (newAccounts) {
+        accounts = newAccounts;
+        window.location.reload();
+      });
+    } catch (error) {
+      console.error(error);
+      connectButton.disabled = false;
+    }
+  } else {
+    alert('MetaMask not detected. Please open inside MetaMask App browser.');
+  }
+}
+
+async function makePayment() {
+  if (accounts.length === 0) {
+    alert('Please connect your MetaMask wallet first.');
+    return;
+  }
+
+  const ethAmount = "{{ eth_amount }}";  // Get ETH amount from Django context
+  const loading = document.getElementById('loadingSpinner');
+
+  try {
+    loading.classList.remove('d-none');
+
+    const txHash = await ethereum.request({
+      method: 'eth_sendTransaction',
+      params: [{
+        from: accounts[0],
+        to: receiverAddress,
+        value: Web3.utils.toHex(Web3.utils.toWei(ethAmount, 'ether')),
+      }]
+    });
+
+    loading.classList.add('d-none');
+    alert('Payment successful! Transaction Hash: ' + txHash);
+  } catch (error) {
+    loading.classList.add('d-none');
+    console.error(error);
+    alert('Payment failed. See console for details.');
+  }
+}
+</script>
+<!-- Add this div right after your <body> tag -->
+<div id="particles-js"></div>
+
+<!-- Add this script import in your <head> section -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<!-- Add this initialization script at the beginning of your existing script -->
+<script>
+// Initialize particles.js
+document.addEventListener('DOMContentLoaded', (event) => {
+  // Initialize particles.js
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 300, // Increased number of particles
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ffd700" // Gold color particles
+      },
+      "shape": {
+        "type": "circle",
+        "stroke": {
+          "width": 0,
+          "color": "#000000"
+        },
+        "polygon": {
+          "nb_sides": 5
+        }
+      },
+      "opacity": {
+        "value": 1, // 100% opacity
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 0.5,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 3,
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 4,
+          "size_min": 0.3
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ffd700", // Gold lines connecting particles
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 5, // Increased speed of particles
+        "direction": "none",
+        "random": true,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false,
+        "attract": {
+          "enable": false,
+          "rotateX": 600,
+          "rotateY": 1200
+        }
+      }
+    },
+    "interactivity": {
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "repulse"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        }
+      }
+    },
+    "retina_detect": true
+  });
+});
+</script>
+</body>
+</html>

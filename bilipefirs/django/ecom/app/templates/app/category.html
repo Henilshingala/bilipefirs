@@ -1,0 +1,244 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}
+Category
+{% endblock title %}
+
+{% block main-content %}
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  .product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 -15px;
+  }
+
+  .product-card {
+    margin: 15px;
+    width: calc(25% - 25px);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background-color: #fff;
+    position: relative;
+  }
+
+  .product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .product-image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    overflow: hidden;
+  }
+
+  .product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover .product-image {
+    transform: scale(1.1);
+  }
+
+  .product-info {
+    padding: 20px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.651);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover .product-info {
+    transform: translateY(0);
+  }
+
+  .product-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #ffffff;
+  }
+
+  .product-price {
+    font-weight: bold;
+    color: #ff1900;
+    font-size: 1.2em;
+  }
+
+  .original-price {
+    font-weight: lighter;
+    text-decoration: line-through;
+    color: #ffffff94;
+    font-size: 0.9em;
+    margin-left: 5px;
+  }
+
+  @media (max-width: 1024px) {
+    .product-card {
+      width: calc(50% - 30px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .product-card {
+      width: calc(100% - 30px);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 40px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .product-card {
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+  }
+
+  .product-card:nth-child(2) { animation-delay: 0.2s; }
+  .product-card:nth-child(3) { animation-delay: 0.4s; }
+  .product-card:nth-child(4) { animation-delay: 0.6s; }
+#particles-js {
+  width: 100%;
+  height: 100vh;  /* Full viewport height */
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #000000;  /* Black background */
+  z-index: -1; /* Keeps the particles behind other content */
+  pointer-events: none;  /* Ensure particles don't interfere with user interactions */
+}
+</style>
+<div id="particles-js"></div>
+<div class="product-grid">
+  {% for prod in products %}
+  <div class="product-card">
+    <a href="{% url 'product-detail' prod.id %}" style="text-decoration: none; color: inherit">
+      <div class="product-image-container">
+        <img src="{{prod.product_image.url}}" alt="{{ prod.title }}" class="product-image" />
+      </div>
+      <div class="product-info">
+        <div class="product-title">{{ prod.title }}</div>
+        <div class="product-price">
+          ₹{{ prod.discounted_price }}
+          <span class="original-price">₹{{ prod.selling_price }}</span>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% empty %}
+  <p>No products available.</p>
+  {% endfor %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+  // Initialize particles.js
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 300,  // Increased number of particles
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ffd700"  // Gold color particles
+      },
+      "shape": {
+        "type": "circle",
+        "stroke": {
+          "width": 0,
+          "color": "#000000"
+        },
+        "polygon": {
+          "nb_sides": 5
+        }
+      },
+      "opacity": {
+        "value": 1,  // 100% opacity
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 0.5,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 3,
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 4,
+          "size_min": 0.3
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ffd700",  // Gold lines connecting particles
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 5,  // Increased speed of particles
+        "direction": "none",
+        "random": true,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false,
+        "attract": {
+          "enable": false,
+          "rotateX": 600,
+          "rotateY": 1200
+        }
+      }
+    },
+    "interactivity": {
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "repulse"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        }
+      }
+    },
+    "retina_detect": true
+  });
+});
+</script>
+{% endblock main-content %}

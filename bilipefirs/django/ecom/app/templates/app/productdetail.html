@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #e74c3c;
+            --text-color: #333;
+            --light-text-color: #fff;
+            --product-box-color: linear-gradient(135deg, #fad4d4 0%, #b8cdff 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: stretch;
+            background: black;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: fadeIn 1s ease-out, float 6s ease-in-out infinite;
+            transition: transform 0.3s ease;
+            border:1px solid white;
+        }
+
+        .product-container:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-image {
+            flex: 1 1 400px;
+            max-width: 100%;
+            padding: 20px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image img:hover {
+            transform: scale(1.05);
+        }
+
+        .product-details {
+            flex: 1 1 400px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 15px;
+        }
+
+        .product-title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            animation: slideInRight 0.5s ease-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-price {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            animation: slideInRight 0.7s ease-out;
+        }
+
+        .product-description {
+            margin-bottom: 20px;
+            animation: slideInRight 0.9s ease-out;
+            color:white;
+        }
+
+        .product-features {
+            margin-bottom: 10px;
+            animation: slideInRight 1.1s ease-out;
+        }
+
+        .product-features h3 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .product-features ul {
+            list-style-type: none;
+        }
+
+        .product-features li {
+            margin-bottom: 5px;
+            position: relative;
+            padding-left: 20px;
+            color:white;
+        }
+
+        .product-features li::before {
+            content: '•';
+            color: white;
+            position: absolute;
+            left: 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            animation: slideInRight 1.3s ease-out;
+        }
+
+        .btn {
+            background-color: #5185ff;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            color: white;
+            background-color: #000000;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column;
+            }
+
+            .product-image {
+                height: 300px;
+                width: 350px;
+            }
+
+            .product-title {
+                font-size: 2em;
+            }
+
+            .product-price {
+                font-size: 1.5em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+
+        #particles-js {
+            width: 100%;
+            height: 100vh;
+            /* Full viewport height */
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #000000;
+            /* Black background */
+            z-index: -1;
+            /* Keeps the particles behind other content */
+            pointer-events: none;
+            /* Ensure particles don't interfere with user interactions */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="product-container">
+            <div class="product-image">
+                <img src="{{ product.product_image.url }}" alt="{{ product.title }}">
+            </div>
+            <div class="product-details">
+                <h1 class="product-title">{{ product.title }}</h1>
+                <p class="product-price">
+                    <span class="current-price">₹ {{ product.discounted_price }} /-</span>
+                    <br><small class="original-price">
+                        <del>₹ {{ product.selling_price }} /-</del>
+                    </small>
+                </p>
+                <div class="product-description">
+                    <p>{{ product.description }}</p>
+                </div>
+                <div class="product-features">
+                    <h3>Product Features</h3>
+                    <ul>
+                        <li>Composition: {{ product.composition }}</li>
+                        <li>Use: {{ product.prodapp }}</li>
+                    </ul>
+                </div>
+                <div class="button-group">
+                    <form action="{% url 'add-to-cart' %}" class="d-inline">
+                        <input type="hidden" name="prod_id" value="{{ product.id }}" />
+                        <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Initialize particles.js
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {
+                        "value": 300,  // Increased number of particles
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffd700"  // Gold color particles
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 1,  // 100% opacity
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 0.5,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 4,
+                            "size_min": 0.3
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffd700",  // Gold lines connecting particles
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 5,  // Increased speed of particles
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "repulse"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+    </script>
+</body>
+
+</html>

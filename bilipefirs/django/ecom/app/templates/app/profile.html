@@ -1,0 +1,364 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Profile{% endblock title %}
+
+{% block main-content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.card {
+    background: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+    border-radius: 10px;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    margin-top: 20px;
+    transition: all 0.3s ease-in-out;
+    backdrop-filter: blur(5px); /* Optional: adds blur effect to background */
+    -webkit-backdrop-filter: blur(5px); /* For Safari */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+}
+
+.card:hover {
+    background: rgba(0, 0, 0, 1); /* Fully opaque black on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    transform: translateY(-5px);
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #ffffff; /* White text for better contrast on dark background */
+    margin-bottom: 1.5rem;
+    position: relative;
+    text-align: center;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 3px;
+    background: #ffd700; /* Gold underline to match particles */
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+}
+
+input, button, select, textarea {
+    width: 100%;
+    border-radius: 5px;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+input, select, textarea {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: #ffd700;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+.btn {
+    border: 1px solid #ffd700;
+    background-color: rgba(255, 215, 0, 0.2); /* Semi-transparent gold */
+    color: #ffd700;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 20px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #ffd700;
+    color: #000000; /* Black text on gold background */
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.alert {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: rgba(20, 160, 70, 0.2);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.alert-warning {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.link-text {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #cccccc; /* Light gray text */
+}
+
+.link-text a {
+    color: #ffd700; /* Gold links to match particles */
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.link-text a:hover {
+    color: #ffffff; /* White text on hover */
+    text-decoration: underline;
+}
+
+.pincode-info {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffd700; /* Gold color for pincode info */
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+/* Form labels styling */
+form label, .form-group label {
+    color: #ffffff; /* Gold color for labels */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* Error text */
+.text-danger {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    margin-top: 2px;
+}
+
+/* Username highlight */
+.text-capitalize {
+    color: #ffd700; /* Gold color for username */
+    font-weight: bold;
+}
+
+/* Particles.js background */
+#particles-js {
+    width: 100%;
+    height: 100vh;  /* Full viewport height */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #000000;  /* Black background */
+    z-index: -1; /* Keeps the particles behind other content */
+    pointer-events: none;  /* Ensure particles don't interfere with user interactions */
+}
+</style>
+
+<!-- Particles.js container -->
+<div id="particles-js"></div>
+
+<div class="container">
+    <div class="card">
+        <h2>Welcome, <span class="text-capitalize">{{ request.user }}</span></h2>
+
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+
+                {% if field.name == "pincode" %}
+                    <input type="text" name="pincode" id="pincode" class="form-control"
+                           placeholder="Enter 6-digit Pincode" maxlength="6" pattern="[0-9]{6}"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);">
+                    <div id="pincode-details" class="pincode-info">Enter a valid pincode...</div>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+
+                {% if field.errors %}
+                <small class="text-danger">{{ field.errors|striptags }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="btn mt-3">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  // Initialize particles.js
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 300,  // Increased number of particles
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ffd700"  // Gold color particles
+      },
+      "shape": {
+        "type": "circle",
+        "stroke": {
+          "width": 0,
+          "color": "#000000"
+        },
+        "polygon": {
+          "nb_sides": 5
+        }
+      },
+      "opacity": {
+        "value": 1,  // 100% opacity
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 0.5,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 3,
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 4,
+          "size_min": 0.3
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ffd700",  // Gold lines connecting particles
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 5,  // Increased speed of particles
+        "direction": "none",
+        "random": true,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false,
+        "attract": {
+          "enable": false,
+          "rotateX": 600,
+          "rotateY": 1200
+        }
+      }
+    },
+    "interactivity": {
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "repulse"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        }
+      }
+    },
+    "retina_detect": true
+  });
+});
+</script>
+
+<script>
+$(document).ready(function() {
+    let isValidPincode = false;
+
+    $('#pincode').on('keyup', function() {
+        let pincode = $(this).val().trim();
+
+        if (pincode.length === 6 && $.isNumeric(pincode)) {
+            console.log("Fetching data for pincode:", pincode);
+
+            $.ajax({
+                url: '/get-pincode-details/',
+                type: 'GET',
+                data: {'pincode': pincode},
+                success: function(response) {
+                    console.log("Response received:", response);
+
+                    if (response.success) {
+                        $('#pincode-details').html(
+                            `📍 <strong>${response.district}, ${response.state}</strong>`
+                        ).fadeIn();
+                        isValidPincode = true;
+                    } else {
+                        $('#pincode-details').html('❌ Invalid Pincode').fadeIn();
+                        isValidPincode = false;
+                    }
+                },
+                error: function() {
+                    $('#pincode-details').html('⚠️ Error fetching pincode details').fadeIn();
+                    isValidPincode = false;
+                }
+            });
+        } else {
+            $('#pincode-details').fadeOut();
+            isValidPincode = false;
+        }
+    });
+
+    $('form').on('submit', function(e) {
+        if (!isValidPincode) {
+            e.preventDefault();
+            alert('Please enter a valid 6-digit pincode before submitting.');
+        }
+    });
+});
+</script>
+
+{% endblock %}

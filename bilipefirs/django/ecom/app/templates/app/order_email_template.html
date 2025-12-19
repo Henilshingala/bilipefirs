@@ -1,0 +1,53 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .email-container {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .product {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .product img {
+            width: 80px;
+            height: 80px;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h2>Hello {{ user.username }},</h2>
+        <p>Your order <strong>ID: {{ order.id }}</strong>  status is now {{order.status}}</p>
+        <h3>Order Details:</h3>
+
+        {% for item in order_items %}
+        <div class="product">
+            <div>
+                <p><strong>{{ item.product.title }}</strong></p>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Price: ₹{{ item.price }}</p>
+            </div>
+        </div>
+        {% endfor %}
+
+        <p class="total">Total Amount: ₹{{ order.total }}</p>
+        <p>Thank you for shopping with us!</p>
+    </div>
+</body>
+</html>

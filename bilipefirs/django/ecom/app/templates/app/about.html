@@ -1,0 +1,330 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock title %}
+
+{% block main-content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Arial:wght@300;400;700&display=swap');
+
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background-color: #000000;
+        color: #fff;
+    }
+
+    #particles-js {
+        width: 100%;
+        height: 100vh;
+        /* Full viewport height */
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #000000;
+        /* Black background */
+        z-index: -1;
+        /* Keeps the particles behind other content */
+        pointer-events: none;
+        /* Ensure particles don't interfere with user interactions */
+    }
+
+    .about-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .about-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .about-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .about-title::after {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background: #a6c0fe;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -10px;
+    }
+
+    .about-tagline {
+        font-size: 1.2rem;
+        color: #ccc;
+        margin-top: 10px;
+    }
+
+    .about-sections {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 30px;
+    }
+
+    .about-section {
+        flex-basis: calc(50% - 15px);
+        background-color: rgba(30, 30, 30, 0.8);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .founder-image {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        display: block;
+        border: 3px solid #a6c0fe;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-section:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        transform: translateY(-5px);
+    }
+
+    .about-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #fff;
+        position: relative;
+    }
+
+    .about-section h2::after {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 2px;
+        background: #a6c0fe;
+        left: 0;
+        bottom: -5px;
+    }
+
+    .about-icon {
+        font-size: 2rem;
+        color: #a6c0fe;
+        margin-bottom: 20px;
+    }
+
+    .about-section p {
+        color: #ddd;
+        margin-bottom: 15px;
+    }
+
+    .about-cta {
+        text-align: center;
+        margin-top: 60px;
+    }
+
+    .about-cta-button {
+        display: inline-block;
+        padding: 12px 30px;
+        background-color: #5185ff;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .about-cta-button:hover {
+        background-color: #a6c0fe;
+        transform: translateY(-2px);
+    }
+
+
+    @keyframes bounce {
+        0% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(15px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .about-section {
+            flex-basis: 100%;
+        }
+    }
+</style>
+
+<!-- Particle background container -->
+<div id="particles-js"></div>
+
+<div class="about-container">
+    <header class="about-header">
+        <h1 class="about-title">Luxury Supercars</h1>
+        <p class="about-tagline">Redefining Excellence in Automotive Luxury</p>
+    </header>
+    <div class="about-sections">
+        <div class="about-section">
+            <img src="{% static 'app/images/founder.png' %}" alt="Henil Shingala - Founder" class="founder-image">
+            <i class="about-icon fa fa-book"></i>
+            <h2>Our Story</h2>
+            <p>
+                Founded by Henil Shingala, Luxury Supercars is the result of passion, dedication, and innovation. As a
+                diploma student in Computer Science Engineering, I built this full-stack e-commerce website using Django
+                entirely on my own. Over 10 months, I brought this vision to life, combining technology with the world
+                of luxury automobiles.
+            </p>
+            <p>
+                This platform is not just about cars—it's about bringing the ultimate supercar experience to enthusiasts
+                worldwide.
+            </p>
+        </div>
+        <div class="about-section">
+            <i class="about-icon fa fa-crosshairs"></i>
+            <h2>Our Mission</h2>
+            <p>
+                Seamless Supercar Shopping<br><br>
+                At Luxury Supercars, we make buying a high-end vehicle as easy as online shopping. With just a few
+                clicks, you can browse, select, and order your dream supercar, and we'll handle the rest—delivering it
+                straight to your home.
+                <br><br>
+                Luxury at Your Fingertips<br><br>
+                Experience the future of supercar acquisition with Luxury Supercars. No dealerships, no hassle—simply
+                explore our collection, place an order, and let us deliver your dream car to your doorstep with
+                white-glove service.
+                <br><br>
+                Revolutionizing Supercar Ownership<br><br>
+                We believe that owning a supercar should be effortless. At Luxury Supercars, we bring the showroom to
+                you, offering a hassle-free, online ordering experience with home delivery, just like shopping for your
+                favorite luxury fashion.
+            </p>
+        </div>
+        <div class="about-section">
+            <i class="about-icon fa fa-cogs"></i>
+            <h2>Expertise</h2>
+            <p>
+                The website features six of the most prestigious supercar brands:
+                Rolls-Royce, McLaren, Porsche, Lamborghini, Bugatti, and Ferrari.
+                Each vehicle is carefully curated to provide an exclusive and seamless buying experience.
+            </p>
+        </div>
+        <div class="about-section">
+            <i class="about-icon fa-solid fa-medal"></i>
+            <h2>Client-Centric Approach</h2>
+            <p>
+                Owning a supercar is more than just a purchase—it's a dream come true. That's why Luxury Supercars
+                offers a premium experience, ensuring that every step, from selection to delivery, is smooth,
+                transparent, and personalized.
+                Welcome to the future of luxury car shopping.
+            </p>
+        </div>
+    </div>
+    <div class="about-cta">
+        <a href="/contact/" class="about-cta-button">Get In Touch</a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Initialize particles.js
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 300,  // Increased number of particles
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffd700"  // Gold color particles
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 1,  // 100% opacity
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 0.5,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 4,
+                        "size_min": 0.3
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffd700",  // Gold lines connecting particles
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 5,  // Increased speed of particles
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    });
+
+</script>
+{% endblock main-content %}

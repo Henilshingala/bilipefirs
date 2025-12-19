@@ -1,0 +1,244 @@
+{% extends 'app/base.html' %}
+{% load static %} 
+{% block title %}Cart{% endblock title %} 
+{% block main-content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<style>
+    #particles-js {
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: black;
+        z-index: -1;
+    }
+    hr{
+        color:white;
+    }
+    .empty-cart {
+        width: 50vw;
+        margin: 0 auto;
+        text-align: center;
+        font-family: "Maison Neue";
+        font-weight: 300;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Light black background */
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    h3 {
+        color: white;
+        font-size: 2rem;
+        margin: 0;
+        padding: 0;
+        font-weight: 600;
+    }
+
+    p {
+        color: white;
+        font-size: 18px;
+        margin: 1.25rem auto;
+    }
+
+    .img-thumbnail {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .checkbtn,
+    .plus-cart,
+    .minus-cart,
+    .remove-cart {
+        display: inline-block;
+        padding: 12px 30px;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .checkbtn {
+        background-color: #5185ff;
+        color: white;
+    }
+
+    .checkbtn:hover {
+        background-color: #000000;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .plus-cart,
+    .minus-cart {
+        background-color: rgb(218, 255, 218);
+        color: green;
+        padding: 8px 15px;
+        font-size: 16px;
+    }
+
+    .plus-cart:hover,
+    .minus-cart:hover {
+        background-color: #000000;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .remove-cart {
+        background-color: rgb(255, 150, 150);
+        color: red;
+        padding: 8px 15px;
+        font-size: 16px;
+    }
+
+    .remove-cart:hover {
+        background-color: #000000;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .card {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Light black background */
+        border-radius: 10px;
+        padding: 15px;
+        border:1px solid red;
+    }
+
+    .list-group-item {
+        background-color: rgba(0, 0, 0, 0.3);
+        /* Light black background */
+        color: white;
+        border: none;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div id="particles-js"></div>
+
+<div class="container my-5">
+    <h1 class="text-center mb-5" style="color: white">Shopping Cart</h1>
+
+    {% if cart %}
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Cart</h3>
+                    {% for item in cart %}
+                    <div class="row mb-4" id="item-row-{{ item.product.id }}">
+                        <div class="col-sm-3 text-center align-self-center">
+                            <img src="{{ item.product.product_image.url }}" alt="" class="img-fluid img-thumbnail"
+                                height="150" width="150" />
+                        </div>
+                        <div class="col-sm-9">
+                            <h5 style="color: white">{{ item.product.title }}</h5>
+                            <p class="mb-2 small" style="color: white">
+                                {{ item.product.description }}
+                            </p>
+                            <div class="my-3">
+                                <label for="quantity" style="color: white">Quantity:</label>
+                                <a class="minus-cart btn" pid="{{ item.product.id }}">&minus;</a>
+                                <span id="quantity" style="color: white">{{ item.quantity }}</span>
+                                <a class="plus-cart btn" pid="{{ item.product.id }}">&plus;</a>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <a href="/cart/" class="remove-cart btn btn-sm" pid="{{ item.product.id }}"
+                                    style="color: white">Remove item</a>
+                                <strong style="color: white">Price: {{ item.product.discounted_price }}₹</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="color: white">Total Amount</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            style="color: white">
+                            Amount
+                            <span id="amount" style="color: white">₹{{ amount }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            style="color: white">
+                            GST (28%) + Cess (20%) :
+                            <span id="gst" style="color: white">₹ {{ total_tax }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            style="color: white">
+                            Shipping
+                            <span style="color: red">₹100000.00</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            style="color: white">
+                            <div><strong>Total</strong> <small>Price</small></div>
+                            <span id="totalamount" style="color: white"><strong>{{ totalamount }}₹</strong></span>
+                        </li>
+                    </ul>
+                    <br />
+                    <a href="/checkout/" class="checkbtn">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        <h3>Your Cart is Empty</h3>
+        <p>Add some items to your cart to get started!</p>
+    </div>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 300, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffd700" },
+                shape: { type: "circle" },
+                opacity: {
+                    value: 1,
+                    random: true,
+                    anim: { enable: true, speed: 0.5, opacity_min: 0.1 },
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: { enable: true, speed: 4, size_min: 0.3 },
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffd700",
+                    opacity: 0.4,
+                    width: 1,
+                },
+                move: {
+                    enable: true,
+                    speed: 5,
+                    random: true,
+                    out_mode: "out",
+                },
+            },
+            interactivity: {
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                },
+            },
+            retina_detect: true,
+        });
+    });
+</script>
+
+{% endblock main-content %}

@@ -1,0 +1,234 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Address Update{% endblock title %}
+
+{% block main-content %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #fbc2eb 0%, #a6c0fe 100%);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        flex-direction: column;
+    }
+
+    .card {
+        background: #ffffff;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 900px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-top: 20px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1.5rem;
+        position: relative;
+        text-align: center;
+    }
+
+    h2::after {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background: #a6c0fe;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -10px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    input, button {
+        width: 100%;
+        border-radius: 5px;
+        padding: 12px;
+        margin: 10px 0;
+        font-size: 16px;
+    }
+
+    input {
+        border: 1px solid #ddd;
+        background: #f9f9f9;
+        outline: none;
+        transition: background 0.3s ease;
+    }
+
+    input:focus {
+        background: #ffffff;
+        border-color: #a6c0fe;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+        background-color: #5185ff;
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-top: 20px;
+        display: inline-block;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        color: white;
+        background-color: #000000;
+        transform: translateY(-2px);
+    }
+
+    .btn-danger {
+        background-color: #ff416c;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .alert {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .alert-warning {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .pincode-info {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        border-radius: 5px;
+        background: #f0f0f0;
+        padding: 5px;
+        margin-top: 5px;
+        display: none;
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <h2>Update Address</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+
+                {% if field.name == "pincode" %}
+                    <input type="text" name="pincode" id="pincode" class="form-control"
+                           placeholder="Enter 6-digit Pincode" maxlength="6" pattern="[0-9]{6}"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);">
+                    <div id="pincode-details" class="pincode-info">Enter a valid pincode...</div>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+
+                {% if field.errors %}
+                <small class="text-danger">{{ field.errors|striptags }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="btn-group">
+                <button type="submit" class="btn">Update Address</button>
+                <a href="{% url 'address' %}" class="btn btn-danger">Back</a>
+            </div>
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} mt-3">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    let isValidPincode = false;
+
+    $('#pincode').on('keyup', function() {
+        let pincode = $(this).val().trim();
+
+        if (pincode.length === 6 && $.isNumeric(pincode)) {
+            console.log("Fetching data for pincode:", pincode);
+
+            $.ajax({
+                url: '/get-pincode-details/',
+                type: 'GET',
+                data: {'pincode': pincode},
+                success: function(response) {
+                    console.log("Response received:", response);
+
+                    if (response.success) {
+                        $('#pincode-details').html(
+                            `📍 <strong>${response.district}, ${response.state}</strong>`
+                        ).fadeIn();
+                        isValidPincode = true;
+                    } else {
+                        $('#pincode-details').html('❌ Invalid Pincode').fadeIn();
+                        isValidPincode = false;
+                    }
+                },
+                error: function() {
+                    $('#pincode-details').html('⚠️ Error fetching pincode details').fadeIn();
+                    isValidPincode = false;
+                }
+            });
+        } else {
+            $('#pincode-details').fadeOut();
+            isValidPincode = false;
+        }
+    });
+
+    $('form').on('submit', function(e) {
+        if (!isValidPincode) {
+            e.preventDefault();
+            alert('Please enter a valid 6-digit pincode before submitting.');
+        }
+    });
+});
+</script>
+
+{% endblock %}

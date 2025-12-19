@@ -1,0 +1,152 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Order Success{% endblock title %}
+
+{% block main-content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #fbc2eb 0%, #a6c0fe 100%);
+    } .card {
+        border: 2px solid black;
+    }.alert {
+        border: 2px solid black;
+    }
+    h5{
+        color:rgb(80, 0, 0);
+    }
+</style>
+
+<div class="container my-5">
+                <br>
+                <div class="row">
+        <div class="col-12">
+            <div class="alert alert-success">
+                <h4 class="alert-heading">Order Placed Successfully!</h4>
+                <p>Your order #{{ order.id|default:"N/A" }} has been confirmed.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5>Order Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5><strong> Order Information : </strong> </h5>
+                    <p><strong>Order ID:</strong> #{{ order.id|default:"N/A" }}</p>
+                    <p><strong>Date:</strong> {{ order.created_at|date:"d M Y, h:i A" }}</p>
+                    <p><strong>Status:</strong> {{ order.status|default:"Pending" }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5><strong> Shipping Address : </strong> </h5>
+                    {% if customer %}
+                        <p><strong> Name : </strong> {{ customer.full_name }}</p>
+                        <p><strong> Address : </strong> {{ customer.house_no }}, {{ customer.street }},{{ customer.landmark }}
+                        <p><strong> City :  </strong> {{ customer.city }}</p>
+                        <p><strong> State : </strong> {{ customer.state }} - {{ customer.pincode }}</p>
+                        <p><strong> Mobile no : </strong> {{ customer.mobile }}</p>
+                    {% else %}
+                        <p>No shipping address available.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <h5><strong> Order Items : </strong> </h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product Image</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                        <td><img
+                            src="{{ item.product.product_image.url }}"
+                            alt=""
+                            class="img-fluid img-thumbnail"
+                            height="150"
+                            width="150"
+                          /></td>
+                        <td>{{ item.product.title }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹{{ item.price }}</td>
+                        <td>₹{{ item.price|multiply:item.quantity }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4"><strong>No items found in this order.</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                        <td><strong>₹{{ order_total|default:"0.00" }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="mt-4">
+                <h5><strong> <strong> Payment Information : </strong></strong>  </h5>
+
+                {% if payment %}
+                    <p><strong>Transaction Hash:</strong> {{ payment.transaction_hash }}</p>
+                    <p><strong>Amount Paid:</strong> {{ payment.amount }} ETH</p>
+                    <p><strong>Payment Status:</strong> {{ payment.status|default:"Pending" }}</p>
+                {% else %}
+                    <p>No payment information available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+
+
+<script>
+function handlePaymentSubmission(paymentData) {
+    fetch('/process-payment/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+        },
+        body: JSON.stringify(paymentData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            window.location.href = data.redirect_url;
+        } else {
+            alert('Payment failed: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Payment processing failed');
+    });
+}
+
+function getCsrfToken() {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, 'csrftoken='.length) === 'csrftoken=') {
+                cookieValue = decodeURIComponent(cookie.substring('csrftoken='.length));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}</script>
+{% endblock main-content %}

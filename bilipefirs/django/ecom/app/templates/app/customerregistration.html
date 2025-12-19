@@ -1,0 +1,285 @@
+{% extends 'app/base.html' %}
+{% block title %}Sign Up{% endblock %}
+{% block main-content %}
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.card {
+    background: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    margin-top: -50px;
+    transition: all 0.3s ease-in-out;
+    backdrop-filter: blur(5px); /* Optional: adds blur effect to background */
+    -webkit-backdrop-filter: blur(5px); /* For Safari */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+}
+
+.card:hover {
+    background: rgba(0, 0, 0, 1); /* Fully opaque black on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    transform: translateY(-5px);
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #ffffff; /* White text for better contrast on dark background */
+    margin-bottom: 1.5rem;
+    position: relative;
+    text-align: center;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 3px;
+    background: #ffd700; /* Gold underline to match particles */
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+}
+
+input, button {
+    width: 100%;
+    border-radius: 5px;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+input {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: #ffd700;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+button {
+    border: 1px solid #ffd700;
+    background-color: rgba(255, 215, 0, 0.2); /* Semi-transparent gold */
+    color: #ffd700;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #ffd700;
+    color: #000000; /* Black text on gold background */
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.alert {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: rgba(20, 160, 70, 0.2);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.alert-warning {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.link-text {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #cccccc; /* Light gray text */
+}
+
+.link-text a {
+    color: #ffd700; /* Gold links to match particles */
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.link-text a:hover {
+    color: #ffffff; /* White text on hover */
+    text-decoration: underline;
+}
+
+/* Form labels styling */
+form label {
+    color: #ffffff; /* Gold color for labels */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* Also ensure any paragraphs within the form (which Django might use for form rendering) are visible */
+form p {
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.help-text {
+    color: #cccccc;
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+/* Style for Django's .errorlist if it exists */
+.errorlist {
+    color: #ff6b6b;
+    list-style-type: none;
+    padding: 0;
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+/* Particles.js background */
+#particles-js {
+    width: 100%;
+    height: 100vh;  /* Full viewport height */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #000000;  /* Black background */
+    z-index: -1; /* Keeps the particles behind other content */
+    pointer-events: none;  /* Ensure particles don't interfere with user interactions */
+}
+</style>
+
+<!-- Particles.js container -->
+<div id="particles-js"></div>
+
+<div class="container">
+    <div class="card">
+        <h2>Register Here</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if messages %}
+                {% for msg in messages %}
+                <div class="alert alert-{{ msg.tags }}" role="alert">
+                    {{ msg }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            <button type="submit">Register</button>
+        </form>
+        <div class="link-text">
+            Already have an account? <a href="{% url 'login' %}">Sign in here</a>
+        </div>
+    </div>
+</div>
+
+<!-- Particles.js script -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  // Initialize particles.js
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 300,  // Increased number of particles
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ffd700"  // Gold color particles
+      },
+      "shape": {
+        "type": "circle",
+        "stroke": {
+          "width": 0,
+          "color": "#000000"
+        },
+        "polygon": {
+          "nb_sides": 5
+        }
+      },
+      "opacity": {
+        "value": 1,  // 100% opacity
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 0.5,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 3,
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 4,
+          "size_min": 0.3
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ffd700",  // Gold lines connecting particles
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 5,  // Increased speed of particles
+        "direction": "none",
+        "random": true,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false,
+        "attract": {
+          "enable": false,
+          "rotateX": 600,
+          "rotateY": 1200
+        }
+      }
+    },
+    "interactivity": {
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "repulse"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        }
+      }
+    },
+    "retina_detect": true
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock title %}
+{% block main-content %}
+<!-- Particles.js Background -->
+<div id="particles-js"></div>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #000;
+    color: white;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: relative;
+    color: #fff;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 3px;
+    background: #ffd700;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.contact-form {
+    flex: 1 1 100%;
+    max-width: 700px;
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.15); /* Lightened form background */
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #ffd700;
+}
+
+label {
+    font-size: 1rem;
+    color: white; /* Make label text white for visibility */
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-control {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-control input,
+.form-control textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px; /* Lighter background for text fields */
+    color: black; /* White text color */
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-control input::placeholder,
+.form-control textarea::placeholder {
+    color: #aaa; /* Placeholder color to ensure it is visible */
+}
+
+.form-control input:focus,
+.form-control textarea:focus {
+    background-color: rgba(255, 255, 255, 0.3); /* Darker background on focus */
+    color: black; /* Ensure text color remains white */
+}
+
+button {
+    padding: 12px 25px;
+    background-color: #ffd700;
+    color: black;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #e6c200;
+}
+
+@media (max-width: 768px) {
+    .contact-form {
+        padding: 20px;
+    }
+}
+
+#particles-js {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #000000;
+    z-index: -1;
+}
+
+
+
+
+</style>
+
+<div class="container">
+    <header>
+        <h1>Contact Us</h1>
+    </header>
+
+    <div class="content">
+        <div class="contact-form">
+            <h2>Send Us a Message</h2>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            <form method="POST" action="{% url 'contact' %}">
+                {% csrf_token %}
+                <div class="form-control">
+                    <input type="text" id="full-name" name="full-name" required placeholder="Full Name">
+                </div>
+                <div class="form-control">
+                    <input type="email" id="email" name="email" required placeholder="Email">
+                </div>
+                <div class="form-control">
+                    <input type="text" id="subject" name="subject" required placeholder="Subject">
+                </div>
+                <div class="form-control">
+                    <textarea id="message" name="message" required placeholder="Your Message" rows="5"></textarea>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Particles.js Script -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 300, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffd700" },
+                shape: { type: "circle" },
+                opacity: {
+                    value: 1,
+                    random: true,
+                    anim: { enable: true, speed: 0.5, opacity_min: 0.1 }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: { enable: true, speed: 4, size_min: 0.3 }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffd700",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 5,
+                    random: true,
+                    out_mode: "out"
+                }
+            },
+            interactivity: {
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                }
+            },
+            retina_detect: true
+        });
+    });
+</script>
+{% endblock main-content %}

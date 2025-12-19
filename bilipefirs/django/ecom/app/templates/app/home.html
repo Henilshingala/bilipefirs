@@ -1,0 +1,774 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+{% block banner-slider %}
+   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slider {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            height: 80vh;
+            margin: 20px;
+            background: #ccc;
+            border-radius: 20px;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .slides {
+            position: absolute;
+            background: var(--img) no-repeat center center;
+            background-size: cover;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transition: 0.5s;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .slides:not(:first-child) .content {
+            display: none;
+        }
+
+        .slides:nth-child(1),
+        .slides:nth-child(2) {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .slides:nth-child(3) {
+            width: 240px;
+            height: 320px;
+            top: auto;
+            bottom: 35px;
+            left: calc(50% - 120px);
+        }
+
+        .slides:nth-child(4) {
+            width: 240px;
+            height: 320px;
+            top: auto;
+            bottom: 35px;
+            left: calc(50% + 140px);
+        }
+
+        .slides:nth-child(5) {
+            width: 240px;
+            height: 320px;
+            top: auto;
+            bottom: 35px;
+            left: calc(50% + 400px);
+        }
+
+        .slides:nth-child(n+6) {
+            width: 240px;
+            height: 320px;
+            top: auto;
+            bottom: 35px;
+            left: calc(50% + 660px);
+        }
+
+        .buttons {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .buttons span {
+            position: absolute;
+            pointer-events: auto;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons span.prev {
+            left: 20px;
+        }
+
+        .buttons span.next {
+            right: 20px;
+        }
+
+        .buttons span:hover {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .buttons span::before {
+            content: "";
+            width: 15px;
+            height: 15px;
+            border-top: 4px solid #fff;
+            border-left: 4px solid #fff;
+            transform: rotate(315deg);
+        }
+
+        .buttons span.next::before {
+            transform: rotate(135deg);
+        }
+
+        @media (max-width: 900px) {
+            .slider {
+                height: calc(100vh - 200px);
+                margin: 20px;
+                padding-bottom: 150px;
+            }
+
+            .slides:nth-child(1),
+            .slides:nth-child(2) {
+                height: calc(100% - 150px);
+            }
+
+            .slides:nth-child(n+3) {
+                width: 120px;
+                height: 120px;
+                bottom: 20px;
+            }
+
+            .slides:nth-child(3) { left: 20px; }
+            .slides:nth-child(4) { left: 150px; }
+            .slides:nth-child(5) { left: 280px; }
+            .slides:nth-child(n+6) { left: 410px; }
+
+            .buttons {
+                bottom: 170px;
+            }
+
+            .buttons span {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .slider {
+                margin: 10px;
+                padding-bottom: 120px;
+            }
+
+            .slides:nth-child(n+3) {
+                width: 80px;
+                height: 80px;
+            }
+
+            .slides:nth-child(3) { left: 10px; }
+            .slides:nth-child(4) { left: 100px; }
+            .slides:nth-child(5) { left: 190px; }
+            .slides:nth-child(n+6) { left: 280px; }
+        }
+    </style>
+
+<div class="container">
+  <div class="slider">
+    <div class="slides" style="--img: url({% static 'app/images/banner/Bugatti_Bolide.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Bugatti_Centodieci.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Bugatti_Divo.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Bugatti_Mistral.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Bugatti_Veyron_16.4_Super_Sport.png' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Bugatti_La_Voiture_Noire.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Ferrari_250_GTO.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Ferrari_488_Pista.jpeg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Ferrari_Enzo.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Ferrari_F40.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Ferrari_LaFerrari.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Ferrari_SF90_Stradale.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Lamborghini_Aventador_SVJ.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Lamborghini_Huracán_EVO.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Lamborghini_Reventón.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Lamborghini_Sian_FKP_37.jpeg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Lamborghini_Veneno.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/Lamborghini-Countach-LPI-800-4.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/McLaren_600LT.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/McLaren_720S.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/McLaren_765LT.jpeg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/McLaren_GT.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/McLaren_Senna_ZVfZW8i.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/McLaren_Speedtail.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/Porsche_911_GT2_RS.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/Porsche_911_GT3_RS.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/Porsche_918_Spyder.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/Porsche_Carrera_GT.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/Porsche_Panamera_Turbo_S.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static '/app/images/banner/Porsche_Taycan_Turbo_S.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Rolls-Royce_Black_Badge_NXxSZP4.webp' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Rolls-Royce_Cullinan_Series_II.jpg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Rolls-Royce_Ghost_GKjBnwm.png' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Rolls-Royce_Phantom_Extended.jpeg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Rolls-Royce_Phantom.jpeg' %})">
+    </div>
+    <div class="slides" style="--img: url({% static 'app/images/banner/Rolls-Royce_Spectre_rYowD3F.jpg' %})">
+    </div>
+  </div>
+  <div class="buttons">
+    <span class="prev"></span>
+    <span class="next"></span>
+  </div>
+</div>
+<br><br>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const next = document.querySelector('.next');
+      const prev = document.querySelector('.prev');
+      const slider = document.querySelector('.slider');
+      let autoPlayInterval;
+      const autoPlayDelay = 2000;
+
+      function nextSlide() {
+          const slides = document.querySelectorAll('.slides');
+          slider.appendChild(slides[0]);
+      }
+
+      function prevSlide() {
+          const slides = document.querySelectorAll('.slides');
+          slider.prepend(slides[slides.length - 1]);
+      }
+
+      function startAutoPlay() {
+          autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
+      }
+
+      function stopAutoPlay() {
+          clearInterval(autoPlayInterval);
+      }
+
+      next.addEventListener('click', () => {
+          stopAutoPlay();
+          nextSlide();
+          startAutoPlay();
+      });
+
+      prev.addEventListener('click', () => {
+          stopAutoPlay();
+          prevSlide();
+          startAutoPlay();
+      });
+
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      slider.addEventListener('touchstart', e => {
+          stopAutoPlay();
+          touchStartX = e.changedTouches[0].screenX;
+      });
+
+      slider.addEventListener('touchend', e => {
+          touchEndX = e.changedTouches[0].screenX;
+          if (touchStartX - touchEndX > 50) {
+              nextSlide();
+          } else if (touchEndX - touchStartX > 50) {
+              prevSlide();
+          }
+          startAutoPlay();
+      });
+
+      slider.addEventListener('mouseenter', stopAutoPlay);
+      slider.addEventListener('mouseleave', startAutoPlay);
+
+      startAutoPlay();
+  });
+</script>
+{% endblock banner-slider %}
+
+
+{% block information %}
+<!-- Add particles.js container -->
+<div id="particles-js"></div>
+
+<div class="bgc">
+  <div class="pcontainer text-center" style="border: 2px solid rgba(255, 0, 0, 0.5); border-radius: 15px;">
+    <h1>Welcome to Bilipefirs,</h1>  <br>
+    <small>
+      the epitome of automotive luxury and performance. Our showroom is dedicated to offering an unparalleled selection of the world's most prestigious supercars and royal luxury vehicles. At Bilipefirs, we believe that every car is a masterpiece, meticulously crafted to deliver an extraordinary driving experience. Our collection features the latest models from renowned brands, each chosen for its exceptional design, innovative technology, and unmatched performance.
+    </small>
+    <br>  <br>
+    <small>
+      Whether you are an avid collector or seeking the perfect car to complement your lifestyle, Bilipefirs is committed to providing personalized service and expert guidance to help you find your dream vehicle. Our knowledgeable staff is here to assist you with every detail, ensuring your experience with us is nothing short of exceptional.
+    </small>
+    <br>  <br>
+    <small>
+      Discover the ultimate in automotive excellence at Bilipefirs, where luxury meets speed.
+    </small>
+    <br>
+    <a href="/about/" class="btn-learn-more">Learn More</a>  <br>  <br>
+  </div>
+</div>
+
+{% endblock information %}
+
+{% block main-content %}
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    /* Removed gradient background as we now have particles.js */
+    background: #000000; /* Black background for particles */
+    position: relative;
+  }
+  .pcontainer {
+    background:none; /* Darker background to go with particles */
+    color: #fff; /* Changed text color to white for better contrast */
+    border: 2px solid #a6c0fe;
+    padding: 0%;
+    margin: 0 10px;
+  }
+  .pcontainer:hover {
+    border-radius: 35px;
+    color: #fff;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .bgc {
+    background-color: rgba(0, 0, 0, 0.5); /* Darker background for better visibility with particles */
+    padding: 40px 0;
+  }
+  small {
+    font-size: 20px;
+  }
+  hr {
+    margin: 0 475px;
+    border: 2px solid #a6c0fe;
+  }
+  .wlc {
+    color: #fff; /* Changed text color to white */
+    text-align: center;
+  }
+  .wlc:hover {
+    background-color: rgba(166, 192, 254, 0.362);
+    height: 50px;
+    margin: -10px 0;
+  }
+  .mhr {
+    border: 1px solid #a6c0fe;
+    margin: 0;
+  }
+  .btn-learn-more {
+    background-color: #5185ff;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 20px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-learn-more:hover {
+    color:white;
+    background-color: #000000;
+    transform: translateY(-2px);
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes flipCard {
+    0% {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(180deg);
+    }
+  }
+
+  .product-showcase {
+    background: rgba(0, 0, 0, 0.7); /* Darker background for better visibility with particles */
+    padding: 50px 0;
+    color: #fff; /* Changed text color to white */
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    animation: fadeInUp 1s ease-out;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 100px;
+    padding: 10px;
+  }
+
+  .product-card {
+    perspective: 900px;
+    height: 400px;
+    cursor: pointer;
+  }
+
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+
+  .product-card:hover .card-inner {
+    animation: flipCard 0.8s forwards;
+  }
+
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+
+  .card-front {
+    background: #000000; /* Changed to black background */
+  }
+
+  .card-front img {     
+    border : 1px solid red;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .card-back {
+     border : 1px solid red;
+    background: rgba(0, 0, 0, 0.9); /* Darker background for card back */
+    color: #fff; /* White text for better visibility */
+    transform: rotateY(180deg);
+    padding: 20px;
+    text-align: center;
+  }
+
+  .card-back h3 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+  }
+
+  .card-back p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+  }
+
+  .btn-explore {
+    background: #a6c0fe;
+    color: #333;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  .btn-explore:hover {
+    background: #5185ff;
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .product-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+  }
+  
+  .product-card .card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.product-card:hover .card-inner {
+  animation: flipCard 0.8s forwards;
+}
+
+.product-card:not(:hover) .card-inner {
+  animation: flipCardReverse 0.8s forwards;
+}
+
+@keyframes flipCard {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+
+@keyframes flipCardReverse {
+  0% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+.product-card:hover .card-front {
+  background: none;
+}
+
+.product-card:hover .card-back {
+  background: none; /* Slightly transparent background */
+}
+/* Ensure particles take full page height */
+#particles-js {
+  width: 100%;
+  height: 100vh;  /* Full viewport height */
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #000000;  /* Black background */
+  z-index: -1; /* Keeps the particles behind other content */
+  pointer-events: none;  /* Ensure particles don't interfere with user interactions */
+}
+
+
+</style>
+
+
+<div class="product-showcase">
+  <h2 class="section-title">Our Luxury Collection</h2>
+
+  <div class="product-grid">
+    <div class="product-card" data-brand="bugatti">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="{% static 'app/images/product/Bugatti Chiron Pur Sport.webp' %}" alt="Bugatti Chiron Super Sport 300+" />
+        </div>
+        <div class="card-back">
+          <h3>Bugatti</h3>
+          <p>Experience unparalleled performance</p>
+          <a href="{% url 'category' 'bg' %}" class="btn-explore">Explore</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-brand="lamborghini">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="{% static 'app/images/product/Lamborghini Huracán STO.webp' %}" alt="Lamborghini Sian FKP 37" />
+        </div>
+        <div class="card-back">
+          <h3>Lamborghini</h3>
+          <p>Unleash the bull within</p>
+          <a href="{% url 'category' 'lb' %}" class="btn-explore">Explore</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-brand="ferrari">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="{% static 'app/images/product/Ferrari sf90 Stradale.jpg' %}" alt="Ferrari SF90 Stradale" />
+        </div>
+        <div class="card-back">
+          <h3>Ferrari</h3>
+          <p>Feel the passion of Maranello</p>
+          <a href="{% url 'category' 'fr' %}" class="btn-explore">Explore</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-brand="rolls-royce">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="{% static 'app/images/product/rolls-royce boat tail.webp' %}" alt="Rolls-Royce Sweptail" />
+        </div>
+        <div class="card-back">
+          <h3>Rolls-Royce</h3>
+          <p>The pinnacle of luxury</p>
+          <a href="{% url 'category' 'rr' %}" class="btn-explore">Explore</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-brand="porsche">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="{% static 'app/images/product/Porsche 911 Turbo S (992).jpg' %}" alt="Porsche 918 Spyder" />
+        </div>
+        <div class="card-back">
+          <h3>Porsche</h3>
+          <p>Precision engineered perfection</p>
+          <a href="{% url 'category' 'pc' %}" class="btn-explore">Explore</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-brand="mclaren">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="{% static 'app/images/product/McLaren Artura.jpg' %}" alt="McLaren Speedtail" />
+        </div>
+        <div class="card-back">
+          <h3>McLaren</h3>
+          <p>Racing DNA for the road</p>
+          <a href="{% url 'category' 'ml' %}" class="btn-explore">Explore</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  // Initialize particles.js
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {
+        "value": 300,  // Increased number of particles
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ffd700"  // Gold color particles
+      },
+      "shape": {
+        "type": "circle",
+        "stroke": {
+          "width": 0,
+          "color": "#000000"
+        },
+        "polygon": {
+          "nb_sides": 5
+        }
+      },
+      "opacity": {
+        "value": 1,  // 100% opacity
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 0.5,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 3,
+        "random": true,
+        "anim": {
+          "enable": true,
+          "speed": 4,
+          "size_min": 0.3
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ffd700",  // Gold lines connecting particles
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 5,  // Increased speed of particles
+        "direction": "none",
+        "random": true,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false,
+        "attract": {
+          "enable": false,
+          "rotateX": 600,
+          "rotateY": 1200
+        }
+      }
+    },
+    "interactivity": {
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "repulse"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        }
+      }
+    },
+    "retina_detect": true
+  });
+});
+
+  </script>
+
+</body>
+</html>
+{% endblock main-content %}
